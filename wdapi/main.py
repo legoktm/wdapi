@@ -9,7 +9,7 @@ from pywikibot.data import api
 import re
 
 
-#normalize a few names
+#normalize/shorten a few names
 norm = {'target required claim': 'target',
         'one of': 'oneof',
         'single value': 'single',
@@ -25,8 +25,6 @@ def normalize(name):
 class WDProperty(pywikibot.PropertyPage):
     def get(self, force=False, *args):
         return_this = super(pywikibot.PropertyPage, self).get(force, *args)  # Do it cuz
-        #print self.site
-        #print self.getID()
         # Check that we don't already have it stored
         if not force and hasattr(self, '_constraints'):
             return return_this
