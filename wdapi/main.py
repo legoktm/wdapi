@@ -27,6 +27,10 @@ class WDProperty(pywikibot.PropertyPage):
         return_this = super(pywikibot.PropertyPage, self).get(force, *args)  # Do it cuz
         #print self.site
         #print self.getID()
+        # Check that we don't already have it stored
+        if not force and hasattr(self, '_constraints'):
+            return return_this
+
         talk = self.toggleTalkPage()
         if talk.exists():
             text = talk.get()
@@ -62,8 +66,13 @@ class WDProperty(pywikibot.PropertyPage):
                 else:
                     d[nm] = ''  # Just set a key like the API does
 
-        self.constraints = d
+        self._constraints = d
         return return_this
+
+    def constraints(self, force=False):
+        if force or not hasattr(self, '_constraints'):
+            self.get(force=force)
+        return self._constraints
 
 
 def canClaimBeAdded(item, claim, checkDupe=True):
@@ -79,14 +88,14 @@ def canClaimBeAdded(item, claim, checkDupe=True):
                     return False, 'checkDupe'
 
     # Run through the various constraints
-    if 'format' in prop.constraints and prop.getType() == 'string':
-        match = re.match(prop.constraints['format'], claim.getTarget())
+    if 'format' in prop.constraints() and prop.getType() == 'string':
+        match = re.match(prop.constraints()['format'], claim.getTarget())
         if not match or match.group(0) != claim.getTarget():
             return False, 'format'
-    if 'oneof' in prop.constraints and prop.getType() == 'wikibase-item':
-        if not claim.getTarget().getID() in prop.constraints['oneof']['values']:
+    if 'oneof' in prop.constraints() and prop.getType() == 'wikibase-item':
+        if not claim.getTarget().getID() in prop.constraints()['oneof']['values']:
             return False, 'oneof'
-    if 'single' in prop.constraints:
+    if 'single' in prop.constraints():
         if item.getID() in item.claims:
             return False, 'single'
 
