@@ -6,13 +6,13 @@ This is a very simple library that parses Wikidata's "constraint" templates into
 
 Installation
 ========
-:
+
     pip install wdapi
 
 
 Documentation
 =========
-* Located on `Wikidata<https://www.wikidata.org/wiki/User:Legoktm/wdapi>`_.
+* Located on `Wikidata <https://www.wikidata.org/wiki/User:Legoktm/wdapi>`_.
 
 
 License
