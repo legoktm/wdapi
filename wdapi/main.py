@@ -91,7 +91,7 @@ def canClaimBeAdded(item, claim, checkDupe=True):
         if not match or match.group(0) != claim.getTarget():
             return False, 'format'
     if 'oneof' in prop.constraints() and prop.getType() == 'wikibase-item':
-        if not claim.getTarget().getID() in prop.constraints()['oneof']['values']:
+        if not claim.getTarget().getID() in prop.constraints()['oneof']:
             return False, 'oneof'
     if 'single' in prop.constraints():
         if item.getID() in item.claims:
