@@ -3,6 +3,8 @@
 Released into the public domain by Legoktm, 2013
 """
 
+import hashlib
+import memcache
 import mwparserfromhell
 import pywikibot
 from pywikibot.data import api
@@ -13,8 +15,10 @@ import re
 norm = {'target required claim': 'target',
         'one of': 'oneof',
         'single value': 'single',
-        'unique value': 'unique'
-}
+        'unique value': 'unique',
+        }
+mc = memcache.Client(['tools-mc'])  # TODO: Make this configurable
+expiry = 60 * 60 * 24  # One day
 
 
 def normalize(name):
@@ -23,6 +27,10 @@ def normalize(name):
 
 
 class WDProperty(pywikibot.PropertyPage):
+    def md5(self):
+        # Hopefully this is unique enough.
+        return hashlib.md5('wdapi' + self.getID()).hexdigest()
+
     def get(self, force=False, *args):
         return_this = super(pywikibot.PropertyPage, self).get(force, *args)  # Do it cuz
         # Check that we don't already have it stored
@@ -30,10 +38,16 @@ class WDProperty(pywikibot.PropertyPage):
             return return_this
 
         talk = self.toggleTalkPage()
-        if talk.exists():
-            text = talk.get()
-        else:
+        if not talk.exists():
             text = ''
+        else:
+            g = mc.get(self.md5())
+            if g is not None:
+                self._constraints = g
+                return return_this
+            else:
+                text = talk.get()
+
         code = mwparserfromhell.parse(text)
         d = {}
         for temp in code.filter_templates(recursive=False):
@@ -65,6 +79,7 @@ class WDProperty(pywikibot.PropertyPage):
                     d[nm] = ''  # Just set a key like the API does
 
         self._constraints = d
+        mc.set(self.md5(), self._constraints, expiry)
         return return_this
 
     def constraints(self, force=False):
