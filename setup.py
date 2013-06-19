@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='wdapi',
-    version='1.0.1',
+    version='1.0.2',
     packages=['wdapi'],
     url='https://github.com/legoktm/wdapi',
     license='Public domain',
