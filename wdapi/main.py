@@ -94,7 +94,7 @@ def canClaimBeAdded(item, claim, checkDupe=True):
         if not claim.getTarget().getID() in prop.constraints()['oneof']:
             return False, 'oneof'
     if 'single' in prop.constraints():
-        if item.getID() in item.claims:
+        if claim.getID() in item.claims:
             return False, 'single'
 
     #TODO: target, unique, item, reciprocal
