@@ -31,8 +31,12 @@ class WDProperty(pywikibot.PropertyPage):
         # Hopefully this is unique enough.
         return hashlib.md5('wdapi' + self.getID()).hexdigest()
 
-    def get(self, force=False, *args):
-        return_this = super(pywikibot.PropertyPage, self).get(force, *args)  # Do it cuz
+    def get(self, force=False, fetch_text=True, *args):
+        #Realistically no one even wants the property info, and datatype is its own function.
+        if fetch_text:
+            return_this = super(pywikibot.PropertyPage, self).get(force, *args)  # Do it cuz
+        else:
+            return_this = {}
         # Check that we don't already have it stored
         if not force and hasattr(self, '_constraints'):
             return return_this
@@ -90,7 +94,7 @@ class WDProperty(pywikibot.PropertyPage):
 
 def canClaimBeAdded(item, claim, checkDupe=True):
     prop = WDProperty(item.repo, claim.getID())
-    prop.get()
+    prop.get(fetch_text=False)
     if not hasattr(item, '_content'):
         # TODO: Not all constraints require fetching this, so it should be lazy
         item.get()
