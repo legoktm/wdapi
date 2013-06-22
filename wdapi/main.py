@@ -88,7 +88,7 @@ class WDProperty(pywikibot.PropertyPage):
 
     def constraints(self, force=False):
         if force or not hasattr(self, '_constraints'):
-            self.get(force=force)
+            self.get(force=force, fetch_text=False)
         return self._constraints
 
 
