@@ -29,7 +29,7 @@ def normalize(name):
 class WDProperty(pywikibot.PropertyPage):
     def md5(self):
         # Hopefully this is unique enough.
-        return hashlib.md5('wdapi' + self.getID()).hexdigest()
+        return hashlib.md5('wdapi' + self.getID() + str(self.repo)).hexdigest()
 
     def get(self, force=False, fetch_text=True, *args):
         #Realistically no one even wants the property info, and datatype is its own function.
