@@ -22,3 +22,5 @@ notifications:
     skip_join: true
     on_success: change
     on_failure: always
+services:
+  - memcached
