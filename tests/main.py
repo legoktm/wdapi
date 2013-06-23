@@ -6,7 +6,8 @@ Released into the public domain by Legoktm, 2013
 import unittest
 
 import pywikibot
-
+import sys
+sys.argv.append('--memcache=127.0.0.1')  # Woot.
 import wdapi
 
 

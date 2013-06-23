@@ -9,6 +9,7 @@ import mwparserfromhell
 import pywikibot
 from pywikibot.data import api
 import re
+import sys
 
 
 #normalize/shorten a few names
@@ -17,7 +18,11 @@ norm = {'target required claim': 'target',
         'single value': 'single',
         'unique value': 'unique',
         }
-mc = memcache.Client(['tools-mc'])  # TODO: Make this configurable
+mc_serv = 'tools-mc'
+for arg in sys.argv:
+    if arg.startswith('--memcache'):
+        mc_serv = arg[11:]
+mc = memcache.Client([mc_serv])  # TODO: Make this configurable
 expiry = 60 * 60 * 24  # One day
 
 
