@@ -70,7 +70,7 @@ class WDProperty(pywikibot.PropertyPage):
                 elif nm == 'oneof':
                     values = unicode(temp.get('values').value)
                     values = pywikibot.removeDisabledParts(values, tags=['comments'])
-                    values = values.replace('{{Q|', '').replace('}}', '')
+                    values = values.replace('{{Q|', '').replace('{{q|', '').replace('}}', '')
                     values = values.split(', ')
                     d[nm] = list()
                     for v in values:
