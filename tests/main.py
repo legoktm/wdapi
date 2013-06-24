@@ -37,18 +37,26 @@ class TestWDProperty(unittest.TestCase):
         p.get(fetch_text=False)
         self.assertIn('unique', p.constraints())
 
+
 class TestAddClaim(unittest.TestCase):
 
     def setUp(self):
         self.repo = pywikibot.Site('wikidata', 'wikidata').data_repository()
         self.p107 = pywikibot.Claim(self.repo, 'p107')
         self.p107.setTarget(pywikibot.ItemPage(self.repo, 'q1'))
+        self.q15 = pywikibot.ItemPage(self.repo, 'Q15')
 
     def test_one_of(self):
-        q15 = pywikibot.ItemPage(self.repo, 'Q15')
-        ok, error = wdapi.canClaimBeAdded(q15, self.p107)
+        ok, error = wdapi.canClaimBeAdded(self.q15, self.p107)
         self.assertFalse(ok)
         self.assertEqual(error, 'oneof')
+
+    def test_duplicate(self):
+        c = pywikibot.Claim(self.repo, 'p361')
+        c.setTarget(pywikibot.ItemPage(self.repo, 'q2'))
+        ok, error = wdapi.canClaimBeAdded(self.q15, c)
+        self.assertFalse(ok)
+        self.assertEqual(error, 'checkDupe')
 
 if __name__ == "__main__":
     unittest.main()
