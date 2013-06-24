@@ -18,11 +18,16 @@ norm = {'target required claim': 'target',
         'single value': 'single',
         'unique value': 'unique',
         }
-mc_serv = 'tools-mc'
-for arg in sys.argv:
-    if arg.startswith('--memcache'):
-        mc_serv = arg[11:]
-mc = memcache.Client([mc_serv])  # TODO: Make this configurable
+
+
+def get_mc_serv():
+    serv = 'tools-mc'
+    for arg in sys.argv:
+        if arg.startswith('--memcache'):
+            serv = arg[11:]
+    return serv
+
+mc = memcache.Client([get_mc_serv()])  # TODO: Make this configurable
 expiry = 60 * 60 * 24  # One day
 
 

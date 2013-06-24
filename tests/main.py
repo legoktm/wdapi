@@ -5,6 +5,7 @@ Released into the public domain by Legoktm, 2013
 
 import unittest
 
+import memcache
 import pywikibot
 import sys
 sys.argv.append('--memcache=127.0.0.1')  # Woot.
@@ -57,6 +58,23 @@ class TestAddClaim(unittest.TestCase):
         ok, error = wdapi.canClaimBeAdded(self.q15, c)
         self.assertFalse(ok)
         self.assertEqual(error, 'checkDupe')
+
+
+class TestCache(unittest.TestCase):
+
+    def setUp(self):
+        self.repo = pywikibot.Site('wikidata', 'wikidata').data_repository()
+        self.prop = wdapi.WDProperty(self.repo, 'p107')
+
+    def test_memcached(self):
+        mc = memcache.Client([wdapi.get_mc_serv()])
+        mc.delete(self.prop.md5())  # Clear anything that might exist
+        self.assertEqual(mc.get(self.prop.md5()), None)  # Ok, it doesn't exist
+        self.prop.get()
+        self.assertEqual(mc.get(self.prop.md5()), self.prop.constraints())
+
+
+
 
 if __name__ == "__main__":
     unittest.main()
