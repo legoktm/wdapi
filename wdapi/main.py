@@ -36,8 +36,9 @@ class WDProperty(pywikibot.PropertyPage):
         # Hopefully this is unique enough.
         return hashlib.md5('wdapi' + self.getID() + str(self.repo)).hexdigest()
 
-    def get(self, force=False, fetch_text=True, *args):
-        #Realistically no one even wants the property info, and datatype is its own function.
+    def get(self, force=False, fetch_text=True, cache=True, *args):
+        # Realistically no one even wants the property info, and datatype is its own function.
+        # Cache controls only saving as cache, not fetching from it
         if fetch_text:
             return_this = super(pywikibot.PropertyPage, self).get(force, *args)  # Do it cuz
         else:
@@ -88,7 +89,8 @@ class WDProperty(pywikibot.PropertyPage):
                     d[nm] = ''  # Just set a key like the API does
 
         self._constraints = d
-        mc.set(self.md5(), self._constraints, expiry)
+        if cache:
+            mc.set(self.md5(), self._constraints, expiry)
         return return_this
 
     def constraints(self, force=False):
