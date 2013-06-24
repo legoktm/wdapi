@@ -9,7 +9,6 @@ install:
   - "curl https://gist.github.com/legoktm/5828320/raw/39d734f9ed18a04fbcfb1c881aa376dee6f050d6/setup.py > ~/rewrite/setup.py"
   - "cd ~/rewrite"
   - "python setup.py install"
-  - "mkdir ~/public_html"  # Scripts assume this exist
   - "cd ~/build/legoktm/wdapi"
   - "python setup.py install"
 # command to run tests
