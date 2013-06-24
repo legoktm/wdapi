@@ -76,6 +76,8 @@ class TestCache(unittest.TestCase):
         mc.set(self.prop.md5(), '12345')
         del self.prop._constraints  # Force a read from memcache
         self.assertEqual(self.prop.constraints(), '12345')
+        mc.delete(self.prop.md5())  # So we don't corrupt any real data
+        
 
 
 
