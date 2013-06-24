@@ -11,7 +11,7 @@ sys.argv.append('--memcache=127.0.0.1')  # Woot.
 import wdapi
 
 
-class TestAPI(unittest.TestCase):
+class TestWDProperty(unittest.TestCase):
 
     def setUp(self):
         self.repo = pywikibot.Site('test', 'wikidata').data_repository()
@@ -36,6 +36,19 @@ class TestAPI(unittest.TestCase):
         p = wdapi.WDProperty(self.repo, 'p11')
         p.get(fetch_text=False)
         self.assertIn('unique', p.constraints())
+
+class TestAddClaim(unittest.TestCase):
+
+    def setUp(self):
+        self.repo = pywikibot.Site('wikidata', 'wikidata').data_repository()
+        self.p107 = pywikibot.Claim(self.repo, 'p107')
+        self.p107.setTarget(pywikibot.ItemPage(self.repo, 'q1'))
+
+    def test_one_of(self):
+        q15 = pywikibot.ItemPage(self.repo, 'Q15')
+        ok, error = wdapi.canClaimBeAdded(q15, self.p107)
+        self.assertFalse(ok)
+        self.assertEqual(error, 'oneof')
 
 if __name__ == "__main__":
     unittest.main()
