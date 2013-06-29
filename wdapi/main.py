@@ -133,7 +133,7 @@ def canClaimBeAdded(item, claim, checkDupe=True):
     return True, None
 
 
-def createItem(page):
+def createItem(page, dontactuallysave=False):
     summary = 'Importing from [[:w:{0}:{1}]]'.format(page.site.language(), page.title())
     gen = api.PropertyGenerator('langlinks', titles=page.title(), lllimit='max',
                                 site=page.site,
@@ -161,6 +161,8 @@ def createItem(page):
     data = {'sitelinks': sitelinks,
             'labels': labels,
             }
+    if dontactuallysave:
+        return data
     repo = page.site.data_repository()
     result = repo.editEntity({}, data, bot=True, summary=summary)
     if 'success' in result and result['success'] == 1:
