@@ -143,7 +143,7 @@ def createItem(page):
     for c in gen:
         if 'langlinks' in c:
             for b in c['langlinks']:
-                link = {'site': b['lang'].replace('-', '_') + 'wiki',
+                link = {'site': page.site.dbName(),
                         'title': b['*'],
                         }
                 label = {'language': b['lang'],
