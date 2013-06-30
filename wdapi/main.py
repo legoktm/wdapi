@@ -134,7 +134,7 @@ def canClaimBeAdded(item, claim, checkDupe=True):
 
 
 def createItem(page, dontactuallysave=False):
-    summary = 'Importing from [[:w:{0}:{1}]]'.format(page.site.language(), page.title())
+    summary = u'Importing from [[:w:{0}:{1}]]'.format(page.site.language(), page.title())
     gen = api.PropertyGenerator('langlinks', titles=page.title(), lllimit='max',
                                 site=page.site,
                                 )
