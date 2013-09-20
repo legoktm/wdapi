@@ -10,8 +10,8 @@ setup(
     author_email='legoktm@gmail.com',
     description='A simple API to parse constraints of properties on Wikidata for wmflabs.',
     install_requires=[
+        'redis',
         'mwparserfromhell',
-        'python-memcached',
     ],
     classifiers=[
         "Programming Language :: Python",

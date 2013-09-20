@@ -4,11 +4,11 @@ Released into the public domain by Legoktm, 2013
 """
 
 import hashlib
-import memcache
 import mwparserfromhell
 import pywikibot
 from pywikibot.data import api
 import re
+import redis
 import sys
 
 
@@ -21,13 +21,13 @@ norm = {'target required claim': 'target',
 
 
 def get_mc_serv():
-    serv = 'tools-mc'
+    serv = 'tools-redis'
     for arg in sys.argv:
         if arg.startswith('--memcache'):
             serv = arg[11:]
     return serv
 
-mc = memcache.Client([get_mc_serv()])  # TODO: Make this configurable
+mc = redis.StrictRedis([get_mc_serv()])  # TODO: Make this configurable
 expiry = 60 * 60 * 24  # One day
 
 
