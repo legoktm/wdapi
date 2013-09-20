@@ -5,7 +5,7 @@ Released into the public domain by Legoktm, 2013
 
 import unittest
 
-import memcache
+import redis
 import pywikibot
 import sys
 sys.argv.append('--memcache=127.0.0.1')  # Woot.
@@ -67,7 +67,7 @@ class TestCache(unittest.TestCase):
         self.prop = wdapi.WDProperty(self.repo, 'p107')
 
     def test_memcached(self):
-        mc = memcache.Client([wdapi.get_mc_serv()])
+        mc = redis.StrictRedis([wdapi.get_mc_serv()])
         mc.delete(self.prop.md5())  # Clear anything that might exist
         self.assertEqual(mc.get(self.prop.md5()), None)  # Ok, it doesn't exist
         self.prop.get()
