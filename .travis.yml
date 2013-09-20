@@ -4,6 +4,10 @@ python:
 # command to install dependencies
 install:
   - "git clone https://github.com/wikimedia/pywikibot-core ~/rewrite"
+  - "cd ~/rewrite"
+  - "git submodule update --init"
+  - "cd externals/httplib2"
+  - "python setup.py install"
   - "mkdir ~/.pywikibot"
   - "curl https://gist.github.com/legoktm/5828299/raw/036c106afdd80c51d3a8b0f4b8585b487813438c/user-config.py > ~/.pywikibot/user-config.py"
   - "curl https://gist.github.com/legoktm/5828320/raw/39d734f9ed18a04fbcfb1c881aa376dee6f050d6/setup.py > ~/rewrite/setup.py"
