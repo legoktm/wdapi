@@ -27,7 +27,7 @@ def get_mc_serv():
             serv = arg[11:]
     return serv
 
-mc = redis.StrictRedis([get_mc_serv()])  # TODO: Make this configurable
+mc = redis.StrictRedis(get_mc_serv())  # TODO: Make this configurable
 expiry = 60 * 60 * 24  # One day
 
 
