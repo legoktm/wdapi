@@ -86,7 +86,7 @@ class WDProperty(pywikibot.PropertyPage):
                     values = values.split(', ')
                     d[nm] = list()
                     for v in values:
-                        d[nm].append('q' + v)
+                        d[nm].append('Q' + v)
 
                 elif nm == 'reciprocal':
                     d[nm] = unicode(temp.get('property').value)
