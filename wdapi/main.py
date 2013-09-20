@@ -3,6 +3,7 @@
 Released into the public domain by Legoktm, 2013
 """
 
+import ast
 import hashlib
 import mwparserfromhell
 import pywikibot
@@ -58,7 +59,7 @@ class WDProperty(pywikibot.PropertyPage):
         else:
             g = mc.get(self.md5())
             if g is not None:
-                self._constraints = g
+                self._constraints = ast.literal_eval(g)
                 return return_this
             else:
                 text = talk.get()

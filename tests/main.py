@@ -71,7 +71,7 @@ class TestCache(unittest.TestCase):
         mc.delete(self.prop.md5())  # Clear anything that might exist
         self.assertEqual(mc.get(self.prop.md5()), None)  # Ok, it doesn't exist
         self.prop.get()
-        self.assertEqual(mc.get(self.prop.md5()), str(self.prop.constraints()))
+        self.assertEqual(mc.get(self.prop.md5()), self.prop.constraints())
         # Now lets fake the data and make sure we get fake data back.
         mc.set(self.prop.md5(), '12345')
         del self.prop._constraints  # Force a read from memcache
