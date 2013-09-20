@@ -74,9 +74,9 @@ class TestCache(unittest.TestCase):
         # redis stores stuff as strings, so wrap it in a str()
         self.assertEqual(mc.get(self.prop.md5()), str(self.prop.constraints()))
         # Now lets fake the data and make sure we get fake data back.
-        mc.set(self.prop.md5(), '12345')
+        mc.set(self.prop.md5(), 'alskdhfiudbnvw')
         del self.prop._constraints  # Force a read from memcache
-        self.assertEqual(self.prop.constraints(), '12345')
+        self.assertEqual(self.prop.constraints(), 'alskdhfiudbnvw')
         mc.delete(self.prop.md5())  # So we don't corrupt any real data
 
 
